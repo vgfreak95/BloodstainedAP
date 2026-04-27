@@ -16,6 +16,7 @@ class RitualItemCategory(Enum):
     FOOD = "Food",
     FOODSTUFF = "FoodStuff",
     KEY = "Key"
+    MONEY = "Money"
 
     # Equipment
     WEAPON = "Weapon",
@@ -60,7 +61,7 @@ CHEST_AND_WALL_ITEMS = {
     "Mithril": RitualItemData(id=0xb1018, name="Mithril", count=11, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "Platinum": RitualItemData(id=0xb1019, name="Platinum", count=24, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     # Remove 16 crystals from pool to allow progressive shards and max stat upgrades (at bottom of list)
-    "Clystal": RitualItemData(id=0xb101a, name="Clystal", count=52 - 16, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
+    "Clystal": RitualItemData(id=0xb101a, name="Clystal", count=52 - 26, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "Gold": RitualItemData(id=0xb101b, name="Gold", count=12, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "Hihiirokane": RitualItemData(id=0xb101c, name="Hihiirokane", count=3, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "Orichalcum": RitualItemData(id=0xb101d, name="Orichalcum", count=11, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
@@ -73,7 +74,7 @@ CHEST_AND_WALL_ITEMS = {
     "ElmLumber": RitualItemData(id=0xb1024, name="ElmLumber", count=5, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "OakLumber": RitualItemData(id=0xb1025, name="OakLumber", count=4, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "WalnutLumber": RitualItemData(id=0xb1026, name="WalnutLumber", count=5, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
-    "MahoganyLumber": RitualItemData(id=0xb1027, name="MahoganyLumber", count=32, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
+    "MahoganyLumber": RitualItemData(id=0xb1027, name="MahoganyLumber", count=32 - 11, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "CypressLumber": RitualItemData(id=0xb1028, name="CypressLumber", count=6, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "Ruby": RitualItemData(id=0xb1029, name="Ruby", count=17, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "Sapphire": RitualItemData(id=0xb102a, name="Sapphire", count=12, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
@@ -235,18 +236,29 @@ CHEST_AND_WALL_ITEMS = {
     "Demoniccapture": RitualItemData(id=0xb10cc, name="Demoniccapture", count=1, category=RitualItemCategory.EFFECTIVESHARD, classification=ItemClassification.progression),
     "Accelerator": RitualItemData(id=0xb10cd, name="Accelerator", count=1, category=RitualItemCategory.EFFECTIVESHARD, classification=ItemClassification.progression),
     "Bloodsteel": RitualItemData(id=0xb10ce, name="Bloodsteel", count=1, category=RitualItemCategory.TRIGGERSHARD, classification=ItemClassification.progression),
-    # Enemies aren't randomized so we take x amount from pool
+}
+
+STAT_ITEMS = {
     "MaxHPUP": RitualItemData(id=0xb10cf, name="MaxHPUP", count=31, category=RitualItemCategory.STAT_UPGRADE, classification=ItemClassification.useful),
     "MaxMPUP": RitualItemData(id=0xb10d0, name="MaxMPUP", count=30, category=RitualItemCategory.STAT_UPGRADE, classification=ItemClassification.useful),
     "MaxBulletUP": RitualItemData(id=0xb10d1, name="MaxBulletUP", count=23, category=RitualItemCategory.STAT_UPGRADE, classification=ItemClassification.useful),
 }
 
+MONEY_ITEMS = {
+    # Gold
+    "G_500": RitualItemData(id=0xb10d4, name="G_500", count=8, category=RitualItemCategory.MONEY, classification=ItemClassification.filler),
+    "G_1000": RitualItemData(id=0xb10d5, name="G_1000", count=4, category=RitualItemCategory.MONEY, classification=ItemClassification.filler),
+    "G_2000": RitualItemData(id=0xb10d6, name="G_2000", count=9, category=RitualItemCategory.MONEY, classification=ItemClassification.filler),
+}
 
-ITEM_NAME_TO_ID = {name: data.id for name, data in CHEST_AND_WALL_ITEMS.items()}
 
-FILLER_ITEMS = {name: data.id for name, data in CHEST_AND_WALL_ITEMS.items() if data.classification == ItemClassification.filler}
 
-ALL_RITUAL_ITEMS = CHEST_AND_WALL_ITEMS
+
+ALL_RITUAL_ITEMS = CHEST_AND_WALL_ITEMS | STAT_ITEMS | MONEY_ITEMS
+
+ITEM_NAME_TO_ID = {name: data.id for name, data in ALL_RITUAL_ITEMS.items()}
+
+FILLER_ITEMS = {name: data.id for name, data in ALL_RITUAL_ITEMS.items() if data.classification == ItemClassification.filler}
 
 
 class RitualItem(Item):
@@ -258,7 +270,7 @@ def get_random_filler_item_name(world: RitualWorld) -> str:
 
 def place_item_in_ritual_world(world: RitualWorld):
     def inner(ritual_item_name: str):
-        ritual_item_data = CHEST_AND_WALL_ITEMS[ritual_item_name]
+        ritual_item_data = ALL_RITUAL_ITEMS[ritual_item_name]
         ritual_item = RitualItem(name=ritual_item_data.name, classification=ritual_item_data.classification, code=ritual_item_data.id, player=world.player)
         return ritual_item
     return inner
@@ -266,11 +278,11 @@ def place_item_in_ritual_world(world: RitualWorld):
 def create_all_items(world: RitualWorld) -> None:
     itempool: list[Item] = []
     # Iterate over all items
-    for item in ALL_RITUAL_ITEMS.values():
+    for key, item in ALL_RITUAL_ITEMS.items():
 
         # Add a number dependent on count
         for _ in range(item.count):
-            itempool.append(world.create_item(item.name))
+            itempool.append(world.create_item(key))
 
     world.multiworld.itempool += itempool
 

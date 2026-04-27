@@ -4,7 +4,6 @@
 
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases/latest)
 - [The Bloodstained AP World](https://github.com/vgfreak95/BloodstainedAP/releases/latest)
-  if not bundled with your version of Archipelago
 - [Lakifume's True Randomizer](https://github.com/Lakifume/True-Randomization/releases/latest)
 - [Bloodstained Modding SDK](https://github.com/vgfreak95/BloodstainedModdingSDK/releases/latest)
 

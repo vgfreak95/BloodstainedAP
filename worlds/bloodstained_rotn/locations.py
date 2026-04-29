@@ -26,8 +26,34 @@ class RitualLocationData:
     type: LocationType
     item_count: int = 1
 
+"""
+Areas Decoded
+"SIP": "Galleon Minerva",
+"VIL": "Village",
+"ENT": "Entrance",
+"GDN": "Garden of Silence",
+"SAN": "Dian Cecht Cathedral",
+"LIB": "Livre Ex Machina",
+"TWR": "Tower of Twin Dragons",
+"TRN": "Runaway Train",
+"TAR": "Secret Sorcery Lab",
+"BIG": "Den of Behemoths",
+"JPN": "Oriental Sorcery Lab",
+"UGD": "Forbidden Underground Waterway",
+"RVA": "Inferno Cave",
+"SND": "Hidden Desert",
+"ARC": "Underground Sorcery Lab",
+"ICE": "Glacial Tomb",
+"EBT": "8 Bit Nightmare",
+"JRN": "The Tunnels",
+"LBP": "Bael Arena",
+"BKR": "Millionaires Room",
+"K2C": "Dead Lands",
+"KNG": "Hall of Termination",
+"""
 
-LOCATIONS_DATA = {
+
+BLUE_AND_GREEN_CHESTS = {
     "Treasurebox_SIP000_Tutorial.0": RitualLocationData(id=0xb100d, name="Treasurebox_SIP000_Tutorial.0", type=LocationType.CHEST, region="m01SIP_000"),
     "Treasurebox_SIP000_Tutorial.1": RitualLocationData(id=0xb100e, name="Treasurebox_SIP000_Tutorial.1", type=LocationType.CHEST, region="m01SIP_000"),
     "Treasurebox_SIP002_1": RitualLocationData(id=0xb100f, name="Treasurebox_SIP002_1", type=LocationType.CHEST, region="m01SIP_002"),
@@ -671,10 +697,43 @@ LOCATIONS_DATA = {
     "Treasurebox_JRN004_1": RitualLocationData(id=0xb128d, name="Treasurebox_JRN004_1", type=LocationType.CHEST, region="m20JRN_004"),
 }
 
+RED_CHESTS = {
+    "Treasurebox_SIP019_1": RitualLocationData(id=0xb128e, name="Treasurebox_SIP019_1", type=LocationType.CHEST, region="m01SIP_019"),
+    "Treasurebox_SIP021_2": RitualLocationData(id=0xb128f, name="Treasurebox_SIP021_2", type=LocationType.CHEST, region="m01SIP_021"),
+    "Treasurebox_SIP025_1": RitualLocationData(id=0xb1290, name="Treasurebox_SIP025_1", type=LocationType.CHEST, region="m01SIP_025"),
+    "Treasurebox_VIL001_1": RitualLocationData(id=0xb1291, name="Treasurebox_VIL001_1", type=LocationType.CHEST, region="m02VIL_001"),
+    "Treasurebox_ENT002_2": RitualLocationData(id=0xb1292, name="Treasurebox_ENT002_2", type=LocationType.CHEST, region="m03ENT_002"),
+    "Treasurebox_ENT004_1": RitualLocationData(id=0xb1293, name="Treasurebox_ENT004_1", type=LocationType.CHEST, region="m03ENT_004"),
+    "Treasurebox_GDN007_1": RitualLocationData(id=0xb1294, name="Treasurebox_GDN007_1", type=LocationType.CHEST, region="m04GDN_007"),
+    "Treasurebox_GDN012_1": RitualLocationData(id=0xb1295, name="Treasurebox_GDN012_1", type=LocationType.CHEST, region="m04GDN_012"),
+    "Treasurebox_SAN016_4": RitualLocationData(id=0xb1296, name="Treasurebox_SAN016_4", type=LocationType.CHEST, region="m05SAN_016"),
+    "Treasurebox_SAN019_2": RitualLocationData(id=0xb1297, name="Treasurebox_SAN019_2", type=LocationType.CHEST, region="m05SAN_019"),
+    "Treasurebox_SAN021_5": RitualLocationData(id=0xb1298, name="Treasurebox_SAN021_5", type=LocationType.CHEST, region="m05SAN_021"),
+    "Treasurebox_SAN021_2": RitualLocationData(id=0xb1299, name="Treasurebox_SAN021_2", type=LocationType.CHEST, region="m05SAN_021"),
+    "Treasurebox_TRN002_5": RitualLocationData(id=0xb129a, name="Treasurebox_TRN002_5", type=LocationType.CHEST, region="m09TRN_002"),
+    "Treasurebox_KNG017_3": RitualLocationData(id=0xb129b, name="Treasurebox_KNG017_1", type=LocationType.CHEST, region="m06KNG_017"),
+    "Treasurebox_UGD009_4": RitualLocationData(id=0xb129c, name="Treasurebox_UGD009_4", type=LocationType.CHEST, region="m11UGD_009"),
+    "Treasurebox_UGD025_1": RitualLocationData(id=0xb129d, name="Treasurebox_UGD025_1", type=LocationType.CHEST, region="m11UGD_025"),
+    "Treasurebox_UGD044_2": RitualLocationData(id=0xb129e, name="Treasurebox_UGD044_2", type=LocationType.CHEST, region="m11UGD_044"),
+    "Treasurebox_JPN002_2": RitualLocationData(id=0xb129f, name="Treasurebox_JPN002_2", type=LocationType.CHEST, region="m15JPN_002"),
+    "Treasurebox_JPN010_2": RitualLocationData(id=0xb12a0, name="Treasurebox_JPN010_2", type=LocationType.CHEST, region="m15JPN_010"),
+    "Treasurebox_BIG006_3": RitualLocationData(id=0xb12a1, name="Treasurebox_BIG006_3", type=LocationType.CHEST, region="m10BIG_006"),
+    "Treasurebox_BIG011_1": RitualLocationData(id=0xb12a2, name="Treasurebox_BIG011_1", type=LocationType.CHEST, region="m10BIG_011"),
+}
+
+PURE_MIRIAM_CHESTS = {
+    "Treasurebox_PureMiriam_Tiare": RitualLocationData(id=0xb12a3, name="Treasurebox_PureMiriam_Tiare", type=LocationType.CHEST, region="m10BIG_011"),
+    "Treasurebox_PureMiriam_Hair": RitualLocationData(id=0xb12a4, name="Treasurebox_PureMiriam_Hair", type=LocationType.CHEST, region="m01SIP_003"),
+    "Treasurebox_PureMiriam_Dress": RitualLocationData(id=0xb12a5, name="Treasurebox_PureMiriam_Dress", type=LocationType.CHEST, region="m08TWR_019"),
+    "Treasurebox_PureMiriam_Sword": RitualLocationData(id=0xb12a6, name="Treasurebox_PureMiriam_Sword", type=LocationType.CHEST, region="m08TWR_016"),
+}
+
+LOCATIONS_DATA = BLUE_AND_GREEN_CHESTS | RED_CHESTS | PURE_MIRIAM_CHESTS
+
 LOCATION_NAME_TO_ID = {name: data.id for name, data in LOCATIONS_DATA.items()}
 
 class RitualLocation(Location):
-    game = "Bloodstained"
+    game = "Bloodstained: Ritual of the Night"
 
 def get_location_names_with_ids(location_names: list[str]) -> dict[str, int | None]:
     return {location_name: LOCATION_NAME_TO_ID[location_name] for location_name in location_names}

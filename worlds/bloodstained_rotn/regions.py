@@ -52,9 +52,7 @@ def create_and_connect_regions(world: RitualWorld) -> None:
 def create_connector_regions(world: RitualWorld):
     garden = world.get_region("m04GDN_001")
     big = world.get_region("m10BIG_000")
-    garden.connect(big, "m04GDN_001 to m10BIG_000", Has("Swordsman"))
-
-    # dominique_arena.connect(bael_arena, "m18ICE_019 to m77LBP_000")
+    garden.connect(big, "m04GDN_001 to m10BIG_000")
 
 def create_all_regions(world: RitualWorld) -> None:
     created_regions = []

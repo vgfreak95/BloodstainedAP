@@ -5,30 +5,41 @@ from typing import TYPE_CHECKING
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule
 from rule_builder.options import OptionFilter
-from rule_builder.rules import Has, HasAll, HasAny, Rule
+from rule_builder.rules import Has, HasAny, HasAnyCount
 
 if TYPE_CHECKING:
     from .world import RitualWorld
 
-# MACROS
-HAS_DOUBLE_JUMP = Has("Doublejump")
-HAS_HIGH_JUMP = Has("HighJump")
-HAS_INVERT = Has("Invert")
-HAS_DIMENSION_SHIFT = Has("Dimensionshift")
-HAS_REFLECTION_RAY = Has("Reflectionray")
-HAS_AQUASTREAM = Has("Aquastream")
-HAS_ACCELERATOR = Has("Accelerator")
-HAS_AEGIS_PLATE = Has("BreastplateofAguilar")
-HAS_CRAFTWORK = Has("Demoniccapture")
-HAS_BLOODSTEAL = Has("Bloodsteal")
-HAS_DEEPSINKER = Has("Deepsinker")
-HAS_ZANGETSUTO = Has("Swordsman")
+# def has_progressive_vertical(count: int):
+#     options = [OptionFilter(ritual_options.VerticalProgressiveMovement, "progressive")]
+#     return HasAnyCount({"Progressive Vertical": count}, options=options)
+#
+# HAS_DOUBLE_JUMP = has_progressive_vertical(1)
+# HAS_HIGH_JUMP = has_progressive_vertical(2)
+# HAS_DIMENSION_SHIFT = has_progressive_vertical(3)
 
-HAS_HEIGHT = HasAny("Doublejump", "HighJump", "Invert", "Dimensionshift", "Reflectionray")
-HAS_FLIGHT = HasAny("HighJump", "Invert", "Dimensionshift")
-HAS_WATER_MOVEMENT = HasAny("Invert", "Deepsinker", "Aquastream")
+
+# MACROS
+HAS_DOUBLE_JUMP = Has("Double Jump")
+HAS_HIGH_JUMP = Has("High Jump")
+HAS_DIMENSION_SHIFT = Has("Dimension Shift")
+HAS_INVERT = Has("Invert")
+HAS_REFLECTION_RAY = Has("Reflector Ray")
+HAS_AQUASTREAM = Has("Aqua Stream")
+HAS_ACCELERATOR = Has("Accelerator")
+HAS_CRAFTWORK = Has("Craftwork")
+HAS_BLOODSTEAL = Has("Blood Steal")
+HAS_DEEPSINKER = Has("Deep Sinker")
+HAS_AEGIS_PLATE = Has("Aegis Plate")
+HAS_ZANGETSUTO = Has("Zangetsuto")
+
+
+HAS_HEIGHT = HasAny("Double Jump", "High Jump", "Invert", "Dimension Shift", "Reflector Ray")
+HAS_FLIGHT = HasAny("High Jump", "Invert", "Dimension Shift")
+HAS_WATER_MOVEMENT = HasAny("Invert", "Deep Sinker", "Aqua Stream")
 
 # Auto-generated entrance rules dict
+
 ENTRANCE_RULES = {
     "m01SIP_001 to m01SIP_023": HAS_HEIGHT,
     "m01SIP_019 to m01SIP_026": (HAS_HEIGHT | HAS_ACCELERATOR),
@@ -231,6 +242,7 @@ ENTRANCE_RULES = {
     "m20JRN_001 to m20JRN_002": HAS_FLIGHT,
     "m20JRN_001 to m20JRN_000": HAS_FLIGHT,
     "m20JRN_002 to m20JRN_003": HAS_FLIGHT,
+    "m04GDN_001 to m10BIG_000": HAS_ZANGETSUTO,
 }
 
 
@@ -376,7 +388,6 @@ LOCATION_RULES = {
     "Treasurebox_JRN001_3": HAS_FLIGHT,
 }
 
-
 def set_all_rules(world: RitualWorld) -> None:
     set_all_entrance_rules(world)
     set_all_location_rules(world)
@@ -385,13 +396,13 @@ def set_all_rules(world: RitualWorld) -> None:
 
 def set_all_entrance_rules(world: RitualWorld) -> None:
     for entrance in world.get_entrances():
-        rule = ENTRANCE_RULES.get(str(entrance))
+        rule = ENTRANCE_RULES.get(entrance.name)
         if rule is not None:
             world.set_rule(entrance, rule)
 
 def set_all_location_rules(world: RitualWorld) -> None:
     for location in world.get_locations():
-        rule = LOCATION_RULES.get(str(location))
+        rule = LOCATION_RULES.get(location.name)
         if rule is not None:
             world.set_rule(location, rule)
 

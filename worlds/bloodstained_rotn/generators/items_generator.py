@@ -29,11 +29,18 @@ class ItemClassification(Enum):
     useful = 2
 
 
-with open("../data/Archipelago.json") as ap_file:
-    ap = json.load(ap_file)
+with open("../data/Archipelago.json") as file:
+    ap = json.load(file)
 
-with open("../data/PB_DT_ItemMaster.json") as item_dt:
-    dt_item = json.load(item_dt)
+with open("../data/PB_DT_ItemMaster.json") as file:
+    dt_item = json.load(file)
+
+with open("../data/translation/Item.json") as file:
+    item_translation_table = json.load(file)
+
+with open("../data/translation/Shard.json") as file:
+    shard_translation_table = json.load(file)
+
 
 template = jinja2.Template("""# Auto-generated file
 
@@ -145,12 +152,12 @@ if __name__ == "__main__":
             continue
         item_category: str = items_category[item]
         if item_category == "FoodStuff" or item_category == "Ingredient" or item_category == "Food":
-            items_data.append({"id": hex(item_id), "name": item, "amount": items_count[item], "category": item_category.upper(), "classification": ItemClassification.filler})
+            items_data.append({"id": hex(item_id), "name": item_translation_table[item], "amount": items_count[item], "category": item_category.upper(), "classification": ItemClassification.filler})
         elif item_category == "Potion" or item_category == "Weapon" or item_category == "Head" or item_category == "Muffler" or item_category == "Accessory1" or item_category == "Body" or item_category == "Bullet" or item_category == "Key":
-            items_data.append({"id": hex(item_id), "name": item, "amount": items_count[item], "category": item_category.upper(), "classification": ItemClassification.useful})
+            items_data.append({"id": hex(item_id), "name": item_translation_table[item], "amount": items_count[item], "category": item_category.upper(), "classification": ItemClassification.useful})
         item_id += 1
     for shard in all_shards:
-        items_data.append({"id": hex(item_id), "name": shard, "amount": 1, "category": shards_category[shard].upper(), "classification": ItemClassification.progression})
+        items_data.append({"id": hex(item_id), "name": shard_translation_table[shard], "amount": 1, "category": shards_category[shard].upper(), "classification": ItemClassification.progression})
         item_id += 1
 
 

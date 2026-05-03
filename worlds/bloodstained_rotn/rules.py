@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from collections import Counter
 
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule
 from rule_builder.options import OptionFilter
 from rule_builder.rules import Has, HasAny, HasAnyCount
+
+from .locations import ALL_RITUAL_LOCATIONS
 
 if TYPE_CHECKING:
     from .world import RitualWorld
@@ -401,9 +404,32 @@ def set_all_entrance_rules(world: RitualWorld) -> None:
             world.set_rule(entrance, rule)
 
 def set_all_location_rules(world: RitualWorld) -> None:
+    all_dot_locations = [location[:-2] for location in ALL_RITUAL_LOCATIONS if "." in location]
+    dot_locations_counter = Counter(all_dot_locations)
+    checked_dot_locations = set()
+
+    # update location rules
+    for location in world.get_locations():
+        location_without_dot = location.name[:-2]
+        if "." not in location.name:
+            continue
+
+        if location_without_dot in checked_dot_locations:
+            continue
+
+        if dot_locations_counter.get(location_without_dot):
+            checked_dot_locations.add(location_without_dot)
+            for i in range(dot_locations_counter[location_without_dot]):
+                LOCATION_RULES[f"{location_without_dot}.{i}"] = LOCATION_RULES.get(location_without_dot)
+
+
     for location in world.get_locations():
         rule = LOCATION_RULES.get(location.name)
-        if rule is not None:
+        if rule is None:
+            continue
+
+        # set rule on individual location
+        if location.name not in dot_locations_counter:
             world.set_rule(location, rule)
 
 def set_completion_condition(world: RitualWorld) -> None:

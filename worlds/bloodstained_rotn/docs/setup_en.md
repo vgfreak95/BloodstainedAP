@@ -35,9 +35,18 @@ of page for more information.
 ## Setup for the Bloodstained AP Client
 1. Download [Bloodstained Modding SDK](https://github.com/vgfreak95/BloodstainedModdingSDK/releases/latest) `version.dll`.
 2. Navigate the File Explorer to your `Game Shipping Directory` (see Terms), and drag `version.dll` into the directory.
-3. Still inside `Game Shipping Directory` remove `UE4SS.dll` and `dwmapi.dll` and ensure `version.dll` is in the directory.
-4. Launch game and load a new save file, once loaded, press F2 to open ImGui window. Note: You cannot connect to AP in the title the gui won't let you!
-5. Insert the correct archipelago slot information and press connect!
+3. Still inside `Game Shipping Directory` ensure `UE4SS.dll`, `dwmapi.dll`, and `version.dll` is in the directory.
+5. In the Game Shipping Directory, open `UE4SS-settings.ini` in notepad or equivalent and change the [Debug] section to be exactly like this:
+```
+[Debug]
+; Whether to enable the external UE4SS debug console.
+ConsoleEnabled = 0
+GuiConsoleEnabled = 0
+GuiConsoleVisible = 0
+```
+5. Launch game and load a new save file, once loaded, press `F5` to open ImGui window. Note: You cannot connect to AP in the title the gui won't let you!
+6. In game, ensure minimap has green outline box. This means the compatibility between UE4SS and the AP Client are correct.
+7. Insert the correct archipelago slot information and press connect!
 
 ## Important Things To Note
 - `index.txt` is a file which contains an index. Do not remove this file while doing a playthrough. After a playthrough is completed, manually

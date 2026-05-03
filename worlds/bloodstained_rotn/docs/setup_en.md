@@ -49,10 +49,7 @@ GuiConsoleVisible = 0
 7. Insert the correct archipelago slot information and press connect!
 
 ## Important Things To Note
-- `index.txt` is a file which contains an index. Do not remove this file while doing a playthrough. After a playthrough is completed, manually
-set the value to -1. I do not currently handle the ability to reset this file, and solely leave it up to the player for now as its WIP.
 - Enemies and Shards are CURRENTLY NOT SUPPORTED. If you receive a duplicate shard, that is expected behavior. The required logic shards are in the item pool
 so even if you get duplicate shards by defeating bosses, any shards collected from defeating bosses aren't intended, so please do not use them for a fair
 game to ensure true completion.
-- When Bael is defeated the victory will not trigger, this is intentional as I haven't figured out a good way to send this flag, probably in next release 1.0.2 or 1.0.3.
 - Please report any crashes, as this software is still in its early beta stages.

@@ -38,6 +38,9 @@ with open("../data/PB_DT_ItemMaster.json") as file:
 with open("../data/translation/Item.json") as file:
     item_translation_table = json.load(file)
 
+with open("../data/ItemDrop.json") as file:
+    item_drop_table = json.load(file)
+
 with open("../data/translation/Shard.json") as file:
     shard_translation_table = json.load(file)
 
@@ -100,6 +103,19 @@ def get_items_count() -> dict[str, int]:
     item_counter = Counter(items_to_count)
     return item_counter
 
+def get_items_count_real() -> dict[str, int]:
+# {
+#   "Accessory": {
+#     "ItemPool": [
+#       "Eyeglasses",
+    items_to_count = []
+    for category in item_drop_table:
+        items_to_count.extend(item_drop_table[category]["ItemPool"])
+    print(items_to_count)
+    item_counter = Counter(items_to_count)
+    print(item_counter)
+    return item_counter
+
 def get_items_category() -> dict[str, str]:
     items_to_category = {}
     for row in dt_item[0]["Rows"]:
@@ -138,7 +154,7 @@ def get_shards_to_category() -> dict[str, str]:
 
 if __name__ == "__main__":
     # output = template.render(items=item_counter)
-    items_count = get_items_count()
+    items_count = get_items_count_real()
     items_category = get_items_category()
     shards_category = get_shards_to_category()
     all_items = items_category.keys()
@@ -147,18 +163,29 @@ if __name__ == "__main__":
     items_data = []
 
 
+    filler_items = 0
+    useful_items = 0
+    progressive_items = 0
     for item in all_items:
         if items_count[item] == 0:
             continue
         item_category: str = items_category[item]
         if item_category == "FoodStuff" or item_category == "Ingredient" or item_category == "Food":
             items_data.append({"id": hex(item_id), "name": item_translation_table[item], "amount": items_count[item], "category": item_category.upper(), "classification": ItemClassification.filler})
+            filler_items += items_count[item]
         elif item_category == "Potion" or item_category == "Weapon" or item_category == "Head" or item_category == "Muffler" or item_category == "Accessory1" or item_category == "Body" or item_category == "Bullet" or item_category == "Key":
             items_data.append({"id": hex(item_id), "name": item_translation_table[item], "amount": items_count[item], "category": item_category.upper(), "classification": ItemClassification.useful})
+            useful_items += items_count[item]
         item_id += 1
     for shard in all_shards:
         items_data.append({"id": hex(item_id), "name": shard_translation_table[shard], "amount": 1, "category": shards_category[shard].upper(), "classification": ItemClassification.progression})
         item_id += 1
+        progressive_items += 1
+
+    print(f"Filler Items: {filler_items}")
+    print(f"Useful Items: {useful_items}")
+    print(f"Progressive Items: {progressive_items}")
+    print(f"Total Items: {filler_items + useful_items + progressive_items}")
 
 
     items_data_output = template.render(items=items_data)

@@ -45,6 +45,7 @@ class RitualItemData:
     category: RitualItemCategory
     classification: ItemClassification
 
+
 CHEST_AND_WALL_ITEMS = {
     "Potion": RitualItemData(id=0xb100d, name="Potion", count=5, category=RitualItemCategory.POTION, classification=ItemClassification.useful),
     "High Potion": RitualItemData(id=0xb100e, name="High Potion", count=2, category=RitualItemCategory.POTION, classification=ItemClassification.useful),
@@ -225,6 +226,7 @@ CHEST_AND_WALL_ITEMS = {
     "Imbrued Bone": RitualItemData(id=0xb10c3, name="Imbrued Bone", count=1, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
     "Small Webbing": RitualItemData(id=0xb10c4, name="Small Webbing", count=1, category=RitualItemCategory.INGREDIENT, classification=ItemClassification.filler),
 }
+
 
 SHARD_ITEMS = {
     "Double Jump": RitualItemData(id=0xb10c5, name="Double Jump", count=1, category=RitualItemCategory.SKILL, classification=ItemClassification.progression),

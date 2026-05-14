@@ -44,6 +44,9 @@ with open("../data/ItemDrop.json") as file:
 with open("../data/translation/Shard.json") as file:
     shard_translation_table = json.load(file)
 
+with open("../data/ShardDrop.json") as file:
+    shard_drop_table = json.load(file)
+
 
 template = jinja2.Template("""# Auto-generated file
 
@@ -111,9 +114,7 @@ def get_items_count_real() -> dict[str, int]:
     items_to_count = []
     for category in item_drop_table:
         items_to_count.extend(item_drop_table[category]["ItemPool"])
-    print(items_to_count)
     item_counter = Counter(items_to_count)
-    print(item_counter)
     return item_counter
 
 def get_items_category() -> dict[str, str]:
@@ -130,20 +131,11 @@ def get_items_category() -> dict[str, str]:
 def get_shards_to_category() -> dict[str, str]:
     shard_to_category = {}
 
-    key_shards = [
-        "Doublejump",
-        "HighJump",
-        "Invert",
-        "Deepsinker",
-        "Dimensionshift",
-        "Reflectionray",
-        "Aquastream",
-        "Demoniccapture",
-        "Accelerator",
-        "Bloodsteel",
-    ]
 
-    for shard in key_shards:
+
+    shards = [shard for shard in shard_translation_table.keys()]
+
+    for shard in shards:
         for row in dt_item[0]["Rows"]:
             if row == shard:
                 dt_row = dt_item[0]["Rows"][row]
@@ -162,6 +154,24 @@ if __name__ == "__main__":
     item_id = 0xb100d
     items_data = []
 
+    key_shards = [
+        "Doublejump",
+        "HighJump",
+        "Invert",
+        "Deepsinker",
+        "Dimensionshift",
+        "Reflectionray",
+        "Aquastream",
+        "Demoniccapture",
+        "Accelerator",
+        "Bloodsteel",
+    ]
+
+    drop_shards = [shard for shard in shard_drop_table["ItemPool"]]
+
+    print(drop_shards)
+
+
 
     filler_items = 0
     useful_items = 0
@@ -177,10 +187,17 @@ if __name__ == "__main__":
             items_data.append({"id": hex(item_id), "name": item_translation_table[item], "amount": items_count[item], "category": item_category.upper(), "classification": ItemClassification.useful})
             useful_items += items_count[item]
         item_id += 1
-    for shard in all_shards:
-        items_data.append({"id": hex(item_id), "name": shard_translation_table[shard], "amount": 1, "category": shards_category[shard].upper(), "classification": ItemClassification.progression})
+
+    # 2 seperate loops for sorting
+    for shard_id in key_shards:
+        items_data.append({"id": hex(item_id), "name": shard_translation_table[shard_id], "amount": 1, "category": shards_category[shard_id].upper(), "classification": ItemClassification.progression})
         item_id += 1
         progressive_items += 1
+
+    for shard_id in drop_shards:
+        items_data.append({"id": hex(item_id), "name": shard_translation_table[shard_id], "amount": 1, "category": shards_category[shard_id].upper(), "classification": ItemClassification.useful})
+
+        item_id += 1
 
     print(f"Filler Items: {filler_items}")
     print(f"Useful Items: {useful_items}")

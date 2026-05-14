@@ -35,7 +35,12 @@ HAS_BLOODSTEAL = Has("Blood Steal")
 HAS_DEEPSINKER = Has("Deep Sinker")
 HAS_AEGIS_PLATE = Has("Aegis Plate")
 HAS_ZANGETSUTO = Has("Zangetsuto")
+HAS_BROMIDE = Has("Silver Bromide")
 
+HAS_CARPENTERS_KEY = Has("Carpenter's Key")
+HAS_WARHORSE_KEY = Has("Warhorse's Key")
+HAS_MILLIONAIRES_KEY = Has("Millionaire's Key")
+HAS_CELESTES_KEY = Has("Celeste's Key")
 
 HAS_HEIGHT = HasAny("Double Jump", "High Jump", "Invert", "Dimension Shift", "Reflector Ray")
 HAS_FLIGHT = HasAny("High Jump", "Invert", "Dimension Shift")
@@ -43,7 +48,7 @@ HAS_WATER_MOVEMENT = HasAny("Invert", "Deep Sinker", "Aqua Stream")
 
 # Auto-generated entrance rules dict
 
-ENTRANCE_RULES = {
+ROOM_ENTRANCE_RULES = {
     "m01SIP_001 to m01SIP_023": HAS_HEIGHT,
     "m01SIP_019 to m01SIP_026": (HAS_HEIGHT | HAS_ACCELERATOR),
     "m03ENT_000 to m03ENT_021": HAS_FLIGHT,
@@ -246,6 +251,7 @@ ENTRANCE_RULES = {
     "m20JRN_001 to m20JRN_000": HAS_FLIGHT,
     "m20JRN_002 to m20JRN_003": HAS_FLIGHT,
     "m04GDN_001 to m10BIG_000": HAS_ZANGETSUTO,
+    "m09TRN_001 to m09TRN_002": HAS_BROMIDE,
 }
 
 
@@ -391,6 +397,141 @@ LOCATION_RULES = {
     "Treasurebox_JRN001_3": HAS_FLIGHT,
 }
 
+ENEMY_NORMAL_ENTRANCE_RULES = {
+    "m05SAN_019 to N3090_Normal_Region": (HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY),
+}
+
+ENEMY_HARD_ENTRANCE_RULES = {
+    "m04GDN_002 to N3029_Hard_Region": (HAS_HIGH_JUMP | HAS_INVERT),
+    "m04GDN_006 to N3011_Hard_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m05SAN_003 to N3090_Hard_Region": HAS_HEIGHT,
+    "m05SAN_019 to N3099_Hard_Region": (HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY),
+    "m06KNG_002 to N3093_Hard_Region": HAS_HEIGHT,
+    "m06KNG_006 to N3093_Hard_Region": HAS_HEIGHT,
+    "m10BIG_006 to N3016_Hard_Region": HAS_HEIGHT,
+    "m11UGD_022 to N3098_Hard_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_023 to N3098_Hard_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_024 to N3078_Hard_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_025 to N3098_Hard_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_040 to N3099_Hard_Region": HAS_HEIGHT,
+    "m14TAR_006 to N3099_Hard_Region": HAS_HEIGHT,
+    "m17RVA_011 to N3119_Hard_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+}
+
+ENEMY_ENTRANCE_RULES = {
+    "m03ENT_007 to N3013_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY | (HAS_DOUBLE_JUMP & HAS_ACCELERATOR)),
+    "m03ENT_007 to N3105_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m04GDN_002 to N3066_Region": (HAS_HIGH_JUMP | HAS_INVERT),
+    "m04GDN_006 to N3105_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m04GDN_006 to N3042_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m04GDN_006 to N3065_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m04GDN_009 to N3091_Region": HAS_FLIGHT,
+    "m88BKR_001 to N3107_Region": HAS_WARHORSE_KEY,
+    "m05SAN_003 to N3034_Region": HAS_HEIGHT,
+    "m05SAN_003 to N3087_Region": HAS_DIMENSION_SHIFT,
+    "m05SAN_003 to N3085_Region": HAS_HEIGHT,
+    "m05SAN_003 to N3079_Region": HAS_DIMENSION_SHIFT,
+    "m05SAN_003 to N3001_Region": HAS_DIMENSION_SHIFT,
+    "m05SAN_016 to N3090_Region": HAS_HEIGHT,
+    "m05SAN_016 to N3102_Region": HAS_HEIGHT,
+    "m05SAN_016 to N3085_Region": HAS_HEIGHT,
+    "m05SAN_017 to N3087_Region": HAS_DIMENSION_SHIFT,
+    "m05SAN_019 to N3102_Region": (HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY),
+    "m05SAN_019 to N3009_Region": (HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY),
+    "m05SAN_019 to N3012_Region": (HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY),
+    "m05SAN_020 to N3053_Region": HAS_HEIGHT,
+    "m05SAN_020 to N3111_Region": HAS_HEIGHT,
+    "m05SAN_021 to N3056_Region": HAS_FLIGHT,
+    "m05SAN_021 to N3009_Region": HAS_DIMENSION_SHIFT,
+    "m05SAN_021 to N3012_Region": HAS_DIMENSION_SHIFT,
+    "m06KNG_007 to N3093_Region": HAS_HEIGHT,
+    "m06KNG_008 to N3093_Region": HAS_HEIGHT,
+    "m06KNG_013 to N3093_Region": HAS_DIMENSION_SHIFT,
+    "m06KNG_015 to N3093_Region": HAS_HEIGHT,
+    "m06KNG_020 to N2013_Region": (HAS_DOUBLE_JUMP | HAS_DIMENSION_SHIFT | (HAS_HIGH_JUMP & HAS_ACCELERATOR)),
+    "m88BKR_002 to N3058_Region": HAS_MILLIONAIRES_KEY,
+    "m88BKR_002 to N3108_Region": HAS_MILLIONAIRES_KEY,
+    "m07LIB_021 to N3093_Region": HAS_HEIGHT,
+    "m09TRN_002 to N3008_Region": HAS_HEIGHT,
+    "m10BIG_006 to N3030_Region": HAS_FLIGHT,
+    "m10BIG_006 to N3081_Region": HAS_HEIGHT,
+    "m10BIG_006 to N2003_Region": HAS_HEIGHT,
+    "m10BIG_007 to N3030_Region": HAS_HEIGHT,
+    "m10BIG_007 to N3045_Region": HAS_HEIGHT,
+    "m10BIG_008 to N3030_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m10BIG_009 to N3067_Region": HAS_FLIGHT,
+    "m10BIG_009 to N3016_Region": HAS_FLIGHT,
+    "m10BIG_011 to N1004_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m10BIG_012 to N3030_Region": HAS_FLIGHT,
+    "m10BIG_012 to N3045_Region": HAS_HEIGHT,
+    "m10BIG_012 to N3023_Region": HAS_HEIGHT,
+    "m10BIG_012 to N3028_Region": HAS_HEIGHT,
+    "m10BIG_012 to N3081_Region": HAS_HEIGHT,
+    "m10BIG_012 to N2003_Region": HAS_HEIGHT,
+    "m10BIG_012 to N2008_Region": HAS_HEIGHT,
+    "m10BIG_015 to N3021_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m10BIG_016 to N3045_Region": HAS_FLIGHT,
+    "m11UGD_003 to N3072_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m11UGD_005 to N3029_Region": (HAS_WATER_MOVEMENT | (HAS_DOUBLE_JUMP & HAS_DIMENSION_SHIFT)),
+    "m11UGD_005 to N3010_Region": (HAS_WATER_MOVEMENT | (HAS_DOUBLE_JUMP & HAS_DIMENSION_SHIFT)),
+    "m11UGD_005 to N3078_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_019 to N3076_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_022 to N3078_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_023 to N3076_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_024 to N3098_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_025 to N3078_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_025 to N3076_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_032 to N3056_Region": HAS_HEIGHT,
+    "m11UGD_036 to N3029_Region": (HAS_WATER_MOVEMENT | (HAS_DOUBLE_JUMP & HAS_DIMENSION_SHIFT)),
+    "m11UGD_036 to N3078_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_040 to N3029_Region": HAS_HEIGHT,
+    "m11UGD_040 to N3078_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_042 to N3076_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_044 to N3076_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_045 to N3076_Region": HAS_WATER_MOVEMENT,
+    "m11UGD_046 to N3098_Region": HAS_WATER_MOVEMENT,
+    "m12SND_015 to N3112_Region": HAS_HEIGHT,
+    "m12SND_017 to N3002_Region": (HAS_FLIGHT | HAS_REFLECTION_RAY),
+    "m12SND_027 to N2014_Region": (HAS_DOUBLE_JUMP | HAS_HIGH_JUMP | HAS_INVERT | HAS_ACCELERATOR),
+    "m14TAR_005 to N3101_Region": HAS_HEIGHT,
+    "m15JPN_007 to N3054_Region": HAS_HEIGHT,
+    "m15JPN_010 to N3035_Region": HAS_HEIGHT,
+    "m15JPN_010 to N3054_Region": HAS_HEIGHT,
+    "m15JPN_010 to N3117_Region": HAS_HEIGHT,
+    "m15JPN_010 to N3020_Region": HAS_HEIGHT,
+    "m15JPN_010 to N3074_Region": (HAS_INVERT | HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY),
+    "m15JPN_012 to N3117_Region": HAS_HEIGHT,
+    "m15JPN_012 to N3020_Region": HAS_HEIGHT,
+    "m88BKR_004 to N3106_1ST_Treasure_Region": HAS_CARPENTERS_KEY,
+    "m88BKR_004 to N3106_2ND_Treasure_Region": HAS_CARPENTERS_KEY,
+    "m88BKR_004 to N3057_Region": HAS_CARPENTERS_KEY,
+    "m88BKR_004 to N3106_Region": HAS_CARPENTERS_KEY,
+    "m17RVA_000 to N3032_Region": HAS_HEIGHT,
+    "m17RVA_001 to N3032_Region": HAS_HEIGHT,
+    "m17RVA_002 to N3071_Region": HAS_HEIGHT,
+    "m17RVA_003 to N3083_Region": HAS_HEIGHT,
+    "m17RVA_003 to N3032_Region": (HAS_HEIGHT | HAS_AEGIS_PLATE),
+    "m17RVA_003 to N3119_Region": (HAS_HEIGHT | HAS_AEGIS_PLATE),
+    "m17RVA_005 to N3083_Region": (HAS_INVERT | HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY),
+    "m17RVA_005 to N3119_Region": (HAS_INVERT | HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY),
+    "m17RVA_005 to N3123_Region": (HAS_INVERT | HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY),
+    "m17RVA_008 to N2006_Region": HAS_HEIGHT,
+    "m18ICE_012 to N3031_Region": HAS_HEIGHT,
+    "m18ICE_018 to N1008_Region": (HAS_INVERT | HAS_DIMENSION_SHIFT | HAS_REFLECTION_RAY | HAS_ACCELERATOR),
+    "m20JRN_000 to N3033_Region": HAS_FLIGHT,
+    "m20JRN_000 to N3032_Region": HAS_FLIGHT,
+    "m20JRN_000 to N3126_Region": HAS_FLIGHT,
+    "m20JRN_000 to N3127_Region": HAS_FLIGHT,
+    "m20JRN_001 to N3033_Region": HAS_FLIGHT,
+    "m20JRN_001 to N3102_Region": HAS_FLIGHT,
+    "m20JRN_001 to N3101_Region": HAS_FLIGHT,
+    "m20JRN_001 to N3031_Region": HAS_FLIGHT,
+    "m20JRN_001 to N3127_Region": HAS_HEIGHT,
+    "m51EBT_000 to N2015_Region": (HAS_DOUBLE_JUMP | HAS_DIMENSION_SHIFT),
+}
+
+ALL_ENTRANCE_RULES = ROOM_ENTRANCE_RULES | ENEMY_ENTRANCE_RULES
+
 def set_all_rules(world: RitualWorld) -> None:
     set_all_entrance_rules(world)
     set_all_location_rules(world)
@@ -398,8 +539,17 @@ def set_all_rules(world: RitualWorld) -> None:
 
 
 def set_all_entrance_rules(world: RitualWorld) -> None:
+    global ALL_ENTRANCE_RULES
+    difficulty = world.options.difficulty
+
+    if difficulty == difficulty.option_normal:
+        ALL_ENTRANCE_RULES = ROOM_ENTRANCE_RULES | ENEMY_ENTRANCE_RULES | ENEMY_NORMAL_ENTRANCE_RULES
+    elif difficulty in (difficulty.option_hard, difficulty.option_nightmare):
+        ALL_ENTRANCE_RULES = ROOM_ENTRANCE_RULES | ENEMY_ENTRANCE_RULES | ENEMY_HARD_ENTRANCE_RULES | ENEMY_ENTRANCE_RULES
+
+
     for entrance in world.get_entrances():
-        rule = ENTRANCE_RULES.get(entrance.name)
+        rule = ALL_ENTRANCE_RULES.get(entrance.name)
         if rule is not None:
             world.set_rule(entrance, rule)
 

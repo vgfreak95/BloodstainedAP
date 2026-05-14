@@ -1,5 +1,5 @@
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from enum import Enum
 import jinja2
@@ -13,6 +13,16 @@ with open("../data/Archipelago.json") as ap_file:
 
 with open("../data/RoomRequirement.json") as room_req_file:
     room_requirements = json.load(room_req_file)
+
+with open("../data/EnemyInfo.json") as enemy_file:
+    enemy_info = json.load(enemy_file)
+
+# Set of enemies that drop shards
+ENEMIES_WITH_SHARDS = {
+    enemy_id.replace("_Hard", "").replace("_Normal", "")
+    for enemy_id, info in enemy_info.items()
+    if info.get("HasShard", False) and enemy_id.startswith("N")
+}
 
 def build_entrance_exit_map() -> dict[str, list[tuple[str, str]]]:
     entrance_to_targets = {}
@@ -95,7 +105,7 @@ def build_entrance_rules():
                 if not requirements:
                     continue
                 
-                if exit_name.startswith("Treasurebox_") or exit_name.startswith("N") or exit_name.startswith("Wall_"):
+                if exit_name.startswith("Treasurebox_") or exit_name.startswith("N") or exit_name.startswith("Wall_") or exit_name.startswith("Fam"):
                     continue
                 
                 to_room = find_target_by_exit(exit_name)
@@ -116,20 +126,24 @@ def build_location_rules():
     for room_id, room_data in room_requirements.items():
         for entrance_name, exit_data in room_data.items():
             for exit_name, requirements in exit_data.items():
+                location_type = ""
                 if not requirements:
                     continue
                 
                 if exit_name.startswith("Treasurebox_"):
-                    location_type = "Treasure"
+                    pass
                 elif exit_name.startswith("Wall_"):
-                    location_type = "Wall"
+                    pass
                 elif exit_name.startswith("N"):
-                    continue
+                    pass
+                elif exit_name.startswith("Fam"):
+                    pass
                 else:
                     continue
                 
-                key = (room_id, exit_name)
+                key = (room_id, exit_name + location_type)
                 if key not in all_rules:
+                    # print(key)
                     all_rules[key] = requirements
     
     return all_rules
@@ -213,6 +227,85 @@ def format_rule(requirements):
         return "(" + " | ".join(parts) + ")"
     return parse_req(requirements)
 
+def get_difficulty_key(enemy_region: str) -> tuple[str, str]:
+    """Returns (dict_key, clean_region_name) after stripping _Hard/_Normal suffixes."""
+    clean = enemy_region.replace("_Shard", "").replace("_Region", "")
+    
+    if "_Hard" in clean:
+        return ("Hard_Enemies", clean.replace("_Hard", "") + "_Region")
+    elif "_Normal" in clean:
+        return ("Normal_Enemies", clean.replace("_Normal", "") + "_Region")
+    return ("Enemies", clean + "_Region")
+
+def build_enemy_regions_split(location_rules):
+    """Build three separate enemy region dicts by difficulty, only including shard-dropping enemies."""
+    enemies_base = {}      # base regions (no suffix)
+    enemies_normal = {}    # _Normal_Region variants
+    enemies_hard = {}     # _Hard_Region variants
+    
+    for (from_room, to_room), requirements in location_rules.items():
+        if not to_room.startswith("N"):
+            continue
+        
+        key, clean_region = get_difficulty_key(to_room)
+        
+        # Extract base enemy ID (e.g., "N3029" from "N3029_Region" or "N3029_Hard_Region")
+        base_id = clean_region.replace("_Region", "").split("_")[0]
+        
+        # Only include enemies that drop shards
+        if base_id not in ENEMIES_WITH_SHARDS:
+            continue
+        
+        target_dict = {
+            "Enemies": enemies_base,
+            "Normal_Enemies": enemies_normal,
+            "Hard_Enemies": enemies_hard,
+        }[key]
+        
+        if from_room not in target_dict:
+            target_dict[from_room] = []
+        
+        if clean_region not in target_dict[from_room]:
+            target_dict[from_room].append(clean_region)
+    
+    # Deduplicate destinations per room
+    for d in [enemies_base, enemies_normal, enemies_hard]:
+        for room in d:
+            d[room] = list(set(d[room]))
+    
+    return {
+        "Enemies": enemies_base,
+        "Normal_Enemies": enemies_normal,
+        "Hard_Enemies": enemies_hard,
+    }
+
+# enemy_regions_by_difficulty = build_enemy_regions_split()
+
+
+enemy_dict_template = jinja2.Template("""# Auto-generated enemy regions dict
+ENEMY_REGIONS = {
+{%- for key, regions in enemy_regions.items() %}
+    "{{ key }}": RitualRegion(alias="Enemy Regions", connections={
+{%- for room, destinations in regions.items() | sort %}
+        "{{ room }}": {{ destinations | tojson }},
+{%- endfor %}
+    }, entrance={}),
+{%- endfor %}
+}
+
+# Flattened list for location generation (deduplicated)
+ENEMY_FLATTENED_REGIONS = [
+{%- for region in enemy_flattened %}
+    "{{ region }}",
+{%- endfor %}
+]
+""")
+
+
+
+
+
+
 entrance_rule_template = jinja2.Template("""{%- for (from_room, to_room), requirements in entrance_rules.items() %}
 {# {{ from_room }} to {{ to_room }} requires {{ requirements }} #}
 tmp_entrance = world.get_entrance("{{ from_room }} to {{ to_room }}")
@@ -237,20 +330,66 @@ LOCATION_RULES = {
 }
 """)
 
+def build_location_with_or_without_rules():
+    all_rules = {}
+    
+    for room_id, room_data in room_requirements.items():
+        for entrance_name, exit_data in room_data.items():
+            for exit_name, requirements in exit_data.items():
+                location_type = ""
+                
+                if exit_name.startswith("Treasurebox_"):
+                    continue
+                elif exit_name.startswith("Wall_"):
+                    continue
+                elif exit_name.startswith("N"):
+                    location_type = "_Shard"
+                elif exit_name.startswith("Fam"):
+                    location_type = "_Shard"
+                else:
+                    continue
+                
+                key = (room_id, exit_name + location_type)
+                if key not in all_rules:
+                    # print(key)
+                    all_rules[key] = requirements
+    
+    return all_rules
+
 if __name__ == "__main__":
 
     flat_rules = flatten_requirements(ALL_ENTRANCE_RULES)
     
     location_rules = build_location_rules()
+    locations_with_or_without_rules = build_location_with_or_without_rules()
     flat_location_rules = flatten_requirements(location_rules)
+    print(flat_location_rules)
     
-    print("\n=== Entrance Rules Dict ===")
     dict_output = entrance_dict_template.render(entrance_rules=flat_rules, format_rule=format_rule)
     with open("../generated/rules.py", "w") as file:
         file.write(dict_output)
-    
-    print("\n=== Location Rules Dict ===")
+
+    dict_output = location_dict_template.render(location_rules=flatten_requirements(locations_with_or_without_rules), format_rule=format_rule)
+    with open("../generated/enemies.py", "w") as file:
+        file.write(dict_output)
+
     location_output = location_dict_template.render(location_rules=flat_location_rules, format_rule=format_rule)
     with open("../generated/rules_location.py", "w") as file:
         file.write(location_output)
+        file.write(".")
 
+    # Generate split enemy regions by difficulty using all locations (with or without rules)
+    flat_locs_no_rules = flatten_requirements(locations_with_or_without_rules)
+    enemy_regions_split = build_enemy_regions_split(flat_locs_no_rules)
+    
+    # Compute flattened list in Python (deduplicated)
+    enemy_flattened = sorted(set(
+        region 
+        for regions in enemy_regions_split.values() 
+        for dests in regions.values() 
+        for region in dests
+    ))
+    
+    enemy_output = enemy_dict_template.render(enemy_regions=enemy_regions_split, enemy_flattened=enemy_flattened)
+    with open("../generated/enemy_regions.py", "w") as file:
+        file.write(enemy_output)

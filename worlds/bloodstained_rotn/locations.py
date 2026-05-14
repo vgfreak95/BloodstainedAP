@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from collections import defaultdict
 from typing import TYPE_CHECKING
 from enum import Enum
 
 from BaseClasses import Location
 
-from . import items
+from . import items, regions
 
 if TYPE_CHECKING:
     from .world import RitualWorld
@@ -638,6 +639,23 @@ BLUE_AND_GREEN_CHESTS = {
     "Treasurebox_ICE014_1.1": RitualLocationData(id=0xb1255, name="Treasurebox_ICE014_1.1", type=LocationType.CHEST, region="m18ICE_014"),
     "Treasurebox_ICE014_1.2": RitualLocationData(id=0xb1256, name="Treasurebox_ICE014_1.2", type=LocationType.CHEST, region="m18ICE_014"),
     "Treasurebox_ICE014_1.3": RitualLocationData(id=0xb1257, name="Treasurebox_ICE014_1.3", type=LocationType.CHEST, region="m18ICE_014"),
+    "Treasurebox_JRN001_1.0": RitualLocationData(id=0xb1280, name="Treasurebox_JRN001_1.0", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_1.1": RitualLocationData(id=0xb1281, name="Treasurebox_JRN001_1.1", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_1.2": RitualLocationData(id=0xb1282, name="Treasurebox_JRN001_1.2", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_1.3": RitualLocationData(id=0xb1283, name="Treasurebox_JRN001_1.3", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_2.0": RitualLocationData(id=0xb1284, name="Treasurebox_JRN001_2.0", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_2.1": RitualLocationData(id=0xb1285, name="Treasurebox_JRN001_2.1", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_2.2": RitualLocationData(id=0xb1286, name="Treasurebox_JRN001_2.2", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_2.3": RitualLocationData(id=0xb1287, name="Treasurebox_JRN001_2.3", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_3.0": RitualLocationData(id=0xb1288, name="Treasurebox_JRN001_3.0", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_3.1": RitualLocationData(id=0xb1289, name="Treasurebox_JRN001_3.1", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_3.2": RitualLocationData(id=0xb128a, name="Treasurebox_JRN001_3.2", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN001_3.3": RitualLocationData(id=0xb128b, name="Treasurebox_JRN001_3.3", type=LocationType.CHEST, region="m20JRN_001"),
+    "Treasurebox_JRN002_1": RitualLocationData(id=0xb128c, name="Treasurebox_JRN002_1", type=LocationType.CHEST, region="m20JRN_002"),
+    "Treasurebox_JRN004_1": RitualLocationData(id=0xb128d, name="Treasurebox_JRN004_1", type=LocationType.CHEST, region="m20JRN_004"),
+}
+
+BREAKABLE_WALLS = {
     "Wall_SIP004_1": RitualLocationData(id=0xb1258, name="Wall_SIP004_1", type=LocationType.CHEST, region="m01SIP_004"),
     "Wall_SIP009_1": RitualLocationData(id=0xb1259, name="Wall_SIP009_1", type=LocationType.CHEST, region="m01SIP_009"),
     "Wall_SIP014_1": RitualLocationData(id=0xb125a, name="Wall_SIP014_1", type=LocationType.CHEST, region="m01SIP_014"),
@@ -678,20 +696,6 @@ BLUE_AND_GREEN_CHESTS = {
     "Wall_ICE003_1": RitualLocationData(id=0xb127d, name="Wall_ICE003_1", type=LocationType.CHEST, region="m18ICE_003"),
     "Wall_ICE010_1": RitualLocationData(id=0xb127e, name="Wall_ICE010_1", type=LocationType.CHEST, region="m18ICE_010"),
     "Wall_ICE017_1": RitualLocationData(id=0xb127f, name="Wall_ICE017_1", type=LocationType.CHEST, region="m18ICE_017"),
-    "Treasurebox_JRN001_1.0": RitualLocationData(id=0xb1280, name="Treasurebox_JRN001_1.0", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_1.1": RitualLocationData(id=0xb1281, name="Treasurebox_JRN001_1.1", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_1.2": RitualLocationData(id=0xb1282, name="Treasurebox_JRN001_1.2", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_1.3": RitualLocationData(id=0xb1283, name="Treasurebox_JRN001_1.3", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_2.0": RitualLocationData(id=0xb1284, name="Treasurebox_JRN001_2.0", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_2.1": RitualLocationData(id=0xb1285, name="Treasurebox_JRN001_2.1", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_2.2": RitualLocationData(id=0xb1286, name="Treasurebox_JRN001_2.2", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_2.3": RitualLocationData(id=0xb1287, name="Treasurebox_JRN001_2.3", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_3.0": RitualLocationData(id=0xb1288, name="Treasurebox_JRN001_3.0", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_3.1": RitualLocationData(id=0xb1289, name="Treasurebox_JRN001_3.1", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_3.2": RitualLocationData(id=0xb128a, name="Treasurebox_JRN001_3.2", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN001_3.3": RitualLocationData(id=0xb128b, name="Treasurebox_JRN001_3.3", type=LocationType.CHEST, region="m20JRN_001"),
-    "Treasurebox_JRN002_1": RitualLocationData(id=0xb128c, name="Treasurebox_JRN002_1", type=LocationType.CHEST, region="m20JRN_002"),
-    "Treasurebox_JRN004_1": RitualLocationData(id=0xb128d, name="Treasurebox_JRN004_1", type=LocationType.CHEST, region="m20JRN_004"),
 }
 
 RED_CHESTS = {
@@ -725,29 +729,64 @@ PURE_MIRIAM_CHESTS = {
     "Treasurebox_PureMiriam_Sword": RitualLocationData(id=0xb12a6, name="Treasurebox_PureMiriam_Sword", type=LocationType.CHEST, region="m08TWR_016"),
 }
 
-ALL_RITUAL_LOCATIONS = BLUE_AND_GREEN_CHESTS | RED_CHESTS | PURE_MIRIAM_CHESTS
+
+ENEMY_LOCATIONS = {}
+
+last_index = list(PURE_MIRIAM_CHESTS.values())[-1].id
+for i, region in enumerate(regions.ENEMY_FLATTENED_REGIONS, start=last_index + 1):
+    enemy = region.split("_")[0]
+    location_name = f"{enemy}_Shard"
+    ENEMY_LOCATIONS[location_name] = RitualLocationData(
+        id=i,
+        name=location_name,
+        type=LocationType.ENEMY,
+        region=region
+    )
+
+WALL_AND_CHEST_LOCATIONS = BLUE_AND_GREEN_CHESTS | RED_CHESTS | PURE_MIRIAM_CHESTS | BREAKABLE_WALLS
+ALL_RITUAL_LOCATIONS = WALL_AND_CHEST_LOCATIONS | ENEMY_LOCATIONS
+
 
 LOCATION_NAME_TO_ID = {name: data.id for name, data in ALL_RITUAL_LOCATIONS.items()}
 
 class RitualLocation(Location):
     game = "Bloodstained: Ritual of the Night"
 
+
 def get_location_names_with_ids(location_names: list[str]) -> dict[str, int | None]:
     return {location_name: LOCATION_NAME_TO_ID[location_name] for location_name in location_names}
 
 
 def create_all_locations(world: RitualWorld) -> None:
-    create_regular_locations(world)
+    create_chest_and_wall_locations(world)
+    create_enemy_locations(world)
     create_events_locations(world)
 
 
-def create_regular_locations(world: RitualWorld) -> None:
-    
-    for location, data in ALL_RITUAL_LOCATIONS.items():
+def create_chest_and_wall_locations(world: RitualWorld) -> None:
+    for location, data in WALL_AND_CHEST_LOCATIONS.items():
         tmp_region = world.get_region(data.region)
         tmp_locations = get_location_names_with_ids([location])
         tmp_region.add_locations(tmp_locations)
+        
 
 def create_events_locations(world: RitualWorld) -> None:
     bael_arena = world.get_region("m77LBP_000")
     bael_arena.add_event("Bael Defeated", "Victory", location_type=RitualLocation, item_type=items.RitualItem)
+
+def create_enemy_locations(world: RitualWorld) -> None:
+    enemy_filtered_regions = set(regions.get_enemy_regions_flat(
+        world.options.difficulty.enemy_keys
+    ))
+
+    added_locations = []
+
+    for region in enemy_filtered_regions:
+        location_name = f"{region.split("_")[0]}_Shard"
+        if location_name in added_locations:
+            # print("_".join(region.split("_")[:-1]) + "_Shard")
+            continue
+        tmp_region = world.get_region(region)
+        tmp_locations = get_location_names_with_ids([location_name])
+        tmp_region.add_locations(tmp_locations)
+        added_locations.append(location_name)

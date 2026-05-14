@@ -10,6 +10,28 @@ class StartChestHasWeapon(Toggle):
     display_name = "Starting Chest has Weapon"
 
 
+class Difficulty(Choice):
+    """
+    The selected/chosen difficulty of the game. This MUST MATCH the True Randomizer.
+    """
+    display_name = "Difficulty Choice"
+    option_normal = 0
+    option_hard = 1
+    option_nightmare = 2
+    default = 0
+
+    @property
+    def enemy_keys(self) -> list[str]:
+        mapping = {
+            "normal": ["Enemies", "Normal"],
+            "hard": ["Enemies", "Hard"],
+            "nightmare": ["Enemies", "Hard"],
+        }
+        return mapping[self.current_key]
+
+    
+
+
 class VerticalProgressiveMovement(Choice):
     """
     Use Progressive Vertical Movement, Double Jump -> High Jump -> Dimension Shift
@@ -47,17 +69,17 @@ class DropMoneyMultiplier(Range):
     range_end = 100
     default = 1
 
-class DropShardMultipler(Range):
-    """
-    Modifies Shard Dropped Multiplier from any Enemies killed.
-
-    When set to 2, the player will double the drop shard chance from enemies.
-    """
-
-    display_name = "Drop Shard Multiplier"
-    range_start = 1
-    range_end = 100
-    default = 2
+# class DropShardMultipler(Range):
+#     """
+#     Modifies Shard Dropped Multiplier from any Enemies killed.
+#
+#     When set to 2, the player will double the drop shard chance from enemies.
+#     """
+#
+#     display_name = "Drop Shard Multiplier"
+#     range_start = 1
+#     range_end = 100
+#     default = 2
 
 class DropItemMultiplier(Range):
     """
@@ -71,6 +93,18 @@ class DropItemMultiplier(Range):
     range_end = 100
     default = 1
 
+class ShardDropInitialGrade(Range):
+    """
+    Since Shards are shuffled a shard can only be obtained once.
+    To account for this, the option allows the player to set a default shard level on collection.
+
+    When set to 5, the player will recieve a Grade 5 Sharp anytime a shard is collected.
+    """
+
+    display_name = "Shard Drop Initial Grade"
+    range_start = 1
+    range_end = 9
+    default = 5
 
 
 @dataclass
@@ -80,6 +114,8 @@ class RitualOptions(PerGameCommonOptions):
     start_inventory: StartInventory
     drop_experience_multiplier: DropExperienceMultiplier
     drop_money_multiplier: DropMoneyMultiplier
-    drop_shard_multiplier: DropShardMultipler
+    # drop_shard_multiplier: DropShardMultipler
     drop_item_multiplier: DropItemMultiplier
+    shard_drop_initial_grade: ShardDropInitialGrade
+    difficulty: Difficulty
     # vertical_progressive_movement: VerticalProgressiveMovement

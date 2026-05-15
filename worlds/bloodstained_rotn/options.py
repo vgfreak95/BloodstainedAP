@@ -69,17 +69,17 @@ class DropMoneyMultiplier(Range):
     range_end = 100
     default = 1
 
-# class DropShardMultipler(Range):
-#     """
-#     Modifies Shard Dropped Multiplier from any Enemies killed.
-#
-#     When set to 2, the player will double the drop shard chance from enemies.
-#     """
-#
-#     display_name = "Drop Shard Multiplier"
-#     range_start = 1
-#     range_end = 100
-#     default = 2
+class DropShardMultipler(Range):
+    """
+    Modifies Shard Dropped Multiplier from any Enemies killed.
+
+    When set to 2, the player will double the drop shard chance from enemies.
+    """
+
+    display_name = "Drop Shard Multiplier"
+    range_start = 1
+    range_end = 100
+    default = 2
 
 class DropItemMultiplier(Range):
     """
@@ -93,7 +93,7 @@ class DropItemMultiplier(Range):
     range_end = 100
     default = 1
 
-class ShardDropInitialGrade(Range):
+class DropShardInitialGrade(Range):
     """
     Since Shards are shuffled a shard can only be obtained once.
     To account for this, the option allows the player to set a default shard level on collection.
@@ -101,7 +101,7 @@ class ShardDropInitialGrade(Range):
     When set to 5, the player will recieve a Grade 5 Sharp anytime a shard is collected.
     """
 
-    display_name = "Shard Drop Initial Grade"
+    display_name = "Drop Shard Initial Grade"
     range_start = 1
     range_end = 9
     default = 5
@@ -114,8 +114,8 @@ class RitualOptions(PerGameCommonOptions):
     start_inventory: StartInventory
     drop_experience_multiplier: DropExperienceMultiplier
     drop_money_multiplier: DropMoneyMultiplier
-    # drop_shard_multiplier: DropShardMultipler
+    drop_shard_multiplier: DropShardMultipler
     drop_item_multiplier: DropItemMultiplier
-    shard_drop_initial_grade: ShardDropInitialGrade
+    drop_shard_initial_grade: DropShardInitialGrade
     difficulty: Difficulty
     # vertical_progressive_movement: VerticalProgressiveMovement

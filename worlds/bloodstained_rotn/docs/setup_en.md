@@ -27,10 +27,9 @@ Next there are two different ways to host the world. Whether you choose to host 
 
 ## Using the True Randomizer
 1. Open the True Randomizer by double-clicking `Randomizer.exe`, and in the bottom left, select Empty preset.
-2. Check `Overworld Pool` and change the Game Difficulty in the bottom left. Optionally in Graphic Randomization select `Outfit Color`.
+2. Check `Overworld Pool` and change the Game Difficulty in the bottom left. Make sure this difficulty matches yamls selected difficulty. Optionally in Graphic Randomization select `Outfit Color`.
 3. Press the Generate button. Generating adds AP specific assets into the game which the AP Mod reads from.
-Note: Applying these fixes will make enemies drop random shards including progression, if it happens that's not intended progression, read bottom
-of page for more information.
+
 
 ## Setup for the Bloodstained AP Client
 1. Download [Bloodstained Modding SDK](https://github.com/vgfreak95/BloodstainedModdingSDK/releases/latest) `version.dll`.
@@ -49,7 +48,4 @@ GuiConsoleVisible = 0
 7. Insert the correct archipelago slot information and press connect!
 
 ## Important Things To Note
-- Enemies and Shards are CURRENTLY NOT SUPPORTED. If you receive a duplicate shard, that is expected behavior. The required logic shards are in the item pool
-so even if you get duplicate shards by defeating bosses, any shards collected from defeating bosses aren't intended, so please do not use them for a fair
-game to ensure true completion.
 - Please report any crashes, as this software is still in its early beta stages.
